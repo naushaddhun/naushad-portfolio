@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { Perf } from "r3f-perf";
 import Elements from "./Elements";
+import Naushad from "../characters/Naushad";
 
 const material = new THREE.MeshNormalMaterial();
 export default function Home() {
@@ -27,8 +28,9 @@ export default function Home() {
         }}
       >
         <color attach="background" args={["black"]} />
+        <ambientLight intensity={0.5} />
         <Perf position="top-left" />
-        {/* <OrbitControls makeDefault /> */}
+        <OrbitControls makeDefault />
         <Stars
           radius={70}
           depth={50}
@@ -58,6 +60,14 @@ export default function Home() {
             </Text3D>
           </Float>
         </Center>
+        <Naushad
+          url={"models/Waving.fbx"}
+          position={[0, -30, -10]}
+          rotation={[0, 0, 0]}
+          scale={0.2}
+          animate={true}
+          look={true}
+        />
         <Elements />
       </Canvas>
     </div>
