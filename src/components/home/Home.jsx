@@ -1,12 +1,12 @@
 import React from "react";
-import { Center, Float, OrbitControls, Stars, Text3D } from "@react-three/drei";
+import { Scroll, ScrollControls, Stars } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import * as THREE from "three";
 import { Perf } from "r3f-perf";
 import Elements from "./Elements";
 import Naushad from "../characters/Naushad";
+import FloatingText from "./FloatingText";
+import HandleScroll from "../scroll/HandleScroll";
 
-const material = new THREE.MeshNormalMaterial();
 export default function Home() {
   return (
     <div
@@ -30,7 +30,7 @@ export default function Home() {
         <color attach="background" args={["black"]} />
         <ambientLight intensity={0.5} />
         <Perf position="top-left" />
-        <OrbitControls makeDefault />
+        {/* <OrbitControls makeDefault /> */}
         <Stars
           radius={70}
           depth={50}
@@ -40,28 +40,10 @@ export default function Home() {
           fade
           speed={1}
         />
-        <Center>
-          <Float floatIntensity={10} rotationIntensity={1} speed={1}>
-            <Text3D
-              material={material}
-              font="./fonts/helvetiker_regular.typeface.json"
-              size={0.75}
-              height={0.2}
-              curveSegments={10}
-              bevelEnabled
-              bevelThickness={0.1}
-              bevelSize={0.05}
-              bevelOffset={0}
-              bevelSegments={5}
-            >
-              Curious Chad {"\n"}
-              XR Enthusiast {"\n"}
-              Full Stack Developer
-            </Text3D>
-          </Float>
-        </Center>
+        <FloatingText />
         <Naushad
           url={"models/Waving.fbx"}
+          name="Naushad"
           position={[0, -30, -10]}
           rotation={[0, 0, 0]}
           scale={0.2}
@@ -69,6 +51,17 @@ export default function Home() {
           look={true}
         />
         <Elements />
+        <ScrollControls
+          pages={3} // Each page takes 100% of the height of the canvas
+          distance={1} // A factor that increases scroll bar travel (default: 1)
+          damping={4} // Friction, higher is faster (default: 4)
+          horizontal={false} // Can also scroll horizontally (default: false)
+          infinite={false} // Can also scroll infinitely (default: false)
+        >
+          <Scroll>
+            <HandleScroll />
+          </Scroll>
+        </ScrollControls>
       </Canvas>
     </div>
   );

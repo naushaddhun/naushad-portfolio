@@ -1,16 +1,22 @@
 import { useAnimations, useFBX } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
+import { refsArray } from "../../framework/utils/refUtils";
 
 export default function FbxLoader(props) {
-  const { url, position, rotation, scale, animate, look } = props;
+  const { url, position, rotation, scale, animate, look, name } = props;
   const ref = useRef();
   const groupRef = useRef();
   const character = useFBX(url);
   const { actions } = useAnimations(character.animations, ref);
   useEffect(() => {
+    const isPresent = refsArray.findIndex((obj) => obj.name === name)
+    if (isPresent === -1 && groupRef.current) refsArray.push(groupRef.current);
+  }, [groupRef, name]);
+  
+  useEffect(() => {
     if (animate) actions["mixamo.com"].play();
-  }, [character]);
+  }, [character, animate, actions]);
 
     useFrame((state) => {
       if(look && groupRef) {
@@ -18,7 +24,7 @@ export default function FbxLoader(props) {
       }
     })
   return (
-    <group ref={groupRef} position={[0, 0, position[2]]}>
+    <group ref={groupRef} name={name} position={[0, 0, position[2]]}>
       <primitive
         ref={ref}
         dispose={null}
